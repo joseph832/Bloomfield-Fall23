@@ -12,6 +12,11 @@ public class gameManager : MonoBehaviour
     float spawnTimer;
 
     public TextMeshProUGUI myTimerText;
+    public TextMeshProUGUI[] playerScores;
+
+    public GameObject[] myPlayers;
+    carController[] myCarControllers;
+
     public GameObject myEnemy;
 
     //we can use Vector2s to represent the X and Y boundaries of our game scene
@@ -21,8 +26,18 @@ public class gameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         timer = 60f;
         spawnTimer = 0f;
+
+        myCarControllers = new carController[myPlayers.Length];
+
+        for (int i = 0; i < myPlayers.Length; i++)
+        {
+            myCarControllers[i] = myPlayers[i].GetComponent<carController>();
+        }
+
+        Debug.Log("myCarController.Length: " + myCarControllers.Length);
     }
 
     // Update is called once per frame
@@ -48,6 +63,11 @@ public class gameManager : MonoBehaviour
             //this can be a prefab from inside your assets folder
             Instantiate(myEnemy, targetPos, Quaternion.identity);
             spawnTimer = 0f; //reset spawn timer on spawn
+        }
+
+        for (int i = 0; i < myCarControllers.Length; i++)
+        {
+            playerScores[i].text = myCarControllers[i].GetScore().ToString();
         }
     }
 

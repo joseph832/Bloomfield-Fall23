@@ -19,10 +19,12 @@ public class carController : MonoBehaviour
     public GameObject myCar;
     public Transform myTransform;
 
+    private int myScore;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        myScore = 0;
     }
 
     // Update is called once per frame
@@ -63,8 +65,14 @@ public class carController : MonoBehaviour
         Debug.Log("collided with: " + collision.gameObject.name);
         if(collision.gameObject.name == "enemy(Clone)")
         {
-            Destroy(collision.gameObject); 
+            Destroy(collision.gameObject);
+            myScore += 1;
             //if the player (this object) hits an enemy, destroy it
         }
+    }
+
+    public int GetScore()
+    {
+        return myScore;
     }
 }
