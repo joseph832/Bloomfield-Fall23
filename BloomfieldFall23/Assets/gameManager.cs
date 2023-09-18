@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class gameManager : MonoBehaviour
 {
-    public float timer;
-    public float fixedTimer;
+    public float timer = 60f;
+    float spawnTimer;
     public TextMeshProUGUI myTimerText;
     public GameObject myEnemy;
 
@@ -15,21 +16,25 @@ public class gameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timer = 0f;
+        timer = 60f;
+        spawnTimer = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        myTimerText.text = timer.ToString();
+        spawnTimer += Time.deltaTime;
+        timer -= Time.deltaTime;
+        float timeDisplay = Mathf.RoundToInt(timer);
+        Debug.Log("timer: " + timer + "timeDisplay: " + timeDisplay);
+        myTimerText.text = timeDisplay.ToString();
 
 
-        Vector3 targetPos = new Vector3(Random.Range(myXbounds.x, myXbounds.y), Random.Range(myYbounds.x, myYbounds.y), 0);
-        if(timer > 2f)
+        Vector3 targetPos = new Vector3(UnityEngine.Random.Range(myXbounds.x, myXbounds.y), UnityEngine.Random.Range(myYbounds.x, myYbounds.y), 0);
+        if(spawnTimer > 2f)
         {
             Instantiate(myEnemy, targetPos, Quaternion.identity);
-            timer = 0f;
+            spawnTimer = 0f;
         }
     }
 
