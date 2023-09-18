@@ -272,6 +272,9 @@ MonoBehaviour:
   playerScores:
   - {fileID: 1468107643}
   - {fileID: 406355819}
+  myPlayers:
+  - {fileID: 1146121805}
+  - {fileID: 1191778123}
   myEnemy: {fileID: 7121705858362148293, guid: 0bf75c720858107448ea0fc03d73a582, type: 3}
   myXbounds: {x: -8.5, y: 8.5}
   myYbounds: {x: -5, y: 5}
@@ -1223,6 +1226,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1121805923}
   m_CullTransparentMesh: 1
+--- !u!1 &1146121805 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8670010989157533546, guid: 43b861a19a541c64da0c459eb5ea9393, type: 3}
+  m_PrefabInstance: {fileID: 1703550744941134440}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1185033485
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1349,6 +1357,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 2.625}
   m_EdgeRadius: 0
+--- !u!1 &1191778123 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1429210664954014452, guid: 4854cc2922e65b84e9fcc9bd29d4da11, type: 3}
+  m_PrefabInstance: {fileID: 7982217452298040086}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1468107641
 GameObject:
   m_ObjectHideFlags: 0
