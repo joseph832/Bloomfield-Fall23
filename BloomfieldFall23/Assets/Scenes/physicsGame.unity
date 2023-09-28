@@ -831,7 +831,47 @@ PrefabInstance:
       objectReference: {fileID: 559580082}
     - target: {fileID: 3409762919027115040, guid: b967e698bc42dc445971b24a68065447, type: 3}
       propertyPath: speed
-      value: 0.002
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409762919027115040, guid: b967e698bc42dc445971b24a68065447, type: 3}
+      propertyPath: sensMouse.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409762919027115040, guid: b967e698bc42dc445971b24a68065447, type: 3}
+      propertyPath: sensMouse.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409762919027115040, guid: b967e698bc42dc445971b24a68065447, type: 3}
+      propertyPath: camVertLock.x
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409762919027115040, guid: b967e698bc42dc445971b24a68065447, type: 3}
+      propertyPath: camVertLock.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080654766023043221, guid: b967e698bc42dc445971b24a68065447, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.485
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080654766023043221, guid: b967e698bc42dc445971b24a68065447, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.806
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080654766023043221, guid: b967e698bc42dc445971b24a68065447, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.98567796
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080654766023043221, guid: b967e698bc42dc445971b24a68065447, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.16863887
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080654766023043221, guid: b967e698bc42dc445971b24a68065447, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 19.417
+      objectReference: {fileID: 0}
+    - target: {fileID: 7826917433565980402, guid: b967e698bc42dc445971b24a68065447, type: 3}
+      propertyPath: field of view
+      value: 82.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
