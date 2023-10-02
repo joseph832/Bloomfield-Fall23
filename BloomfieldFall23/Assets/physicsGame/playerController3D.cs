@@ -64,7 +64,6 @@ public class playerController3D : MonoBehaviour
 
         //after normalizing we multiply the vector by our speed variable to set our player speed in a
         //clean and consistent way. We also set the Translate in Space.World, since our input axes give us world coordinates
-        Debug.DrawRay(this.transform.position, myDir * 5f, Color.yellow, 20f);
 
 
         //rotations Y&X are pulled from mouse look, go into camera controls
@@ -92,10 +91,12 @@ public class playerController3D : MonoBehaviour
         //check for spacebar up to jump
         if (Input.GetKeyUp(KeyCode.Space) && grounded) { PlayerJump(); }
 
-        //add force from the player direction
-        Vector3 currentDir = Direction();
+        //add force from the player direction - use TransformDirection to apply it in world coordinates
+        Vector3 currentDir = transform.TransformDirection(Direction());
         myRB.AddForce(currentDir * speed, ForceMode.VelocityChange);
-        Debug.Log("myDir: " + currentDir);
+
+        //debug for player input dir to show in scene edit mode
+        Debug.DrawRay(this.transform.position, currentDir * 5f, Color.yellow, 5f);
 
 
 
@@ -126,8 +127,8 @@ public class playerController3D : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
+        //construct our direction then return it
         myDir = new Vector3(x, 0f, z);
-
         return myDir;
     }
 

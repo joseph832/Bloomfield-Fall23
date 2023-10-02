@@ -122,8 +122,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f6077a1cbd659041834482c12999b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.2
+  speed: 0.1
+  jumpForce: 5
+  sensMouse: {x: 0.5, y: 0.5}
   myCam: {fileID: 0}
+  camVertLock: {x: 90, y: -90}
+  grounded: 0
 --- !u!54 &1195680533484709625
 Rigidbody:
   m_ObjectHideFlags: 0
