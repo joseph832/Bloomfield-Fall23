@@ -10,6 +10,8 @@ public class cubeEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //we find the rigidbody - running this in start because it's more efficient
+        //GetComponent is a search/find function so it's inefficient to run in update/ will slow your game down
         myRB = GetComponent<Rigidbody>();
     }
 
@@ -23,11 +25,14 @@ public class cubeEnemy : MonoBehaviour
         //double checking our math just in case with a debug
         Debug.DrawRay(transform.position, dirTowards, Color.black, .1f);
 
+        //remove the y axis to keep the enemies grounded
+        dirTowards = new Vector3(dirTowards.x, 0f, dirTowards.z);
+
         //add force towards the player
         myRB.AddForce(dirTowards * speed);
     }
 
-    public void SetPlayer(GameObject player)
+    public void SetPlayer(GameObject player) //this is here for the gameManager to call on enemy spawn
     {
         targetPlayer = player;
     }

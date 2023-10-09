@@ -55,13 +55,28 @@ public class physicsGameManager : MonoBehaviour
             //this can be a prefab from inside your assets folder
 
             //instantiate a new enemy - be sure to declare it so we can assign it a player
-            GameObject newEnemy = Instantiate(myEnemy, targetPos, Quaternion.identity);
-            cubeEnemy newScript = newEnemy.GetComponent<cubeEnemy>();
-            newScript.SetPlayer(myPlayer);
+            spawnRamp(myEnemy, targetPos);
 
             spawnTimer = 0f; //reset spawn timer on spawn
         }
 
+
+    }
+
+    void spawnCube(GameObject myCube, Vector3 targetPos)
+    {
+        //instantiate a new enemy - be sure to declare it so we can assign it a player
+        GameObject newEnemy = Instantiate(myCube, targetPos, Quaternion.identity);
+        cubeEnemy newScript = newEnemy.GetComponent<cubeEnemy>();
+        newScript.SetPlayer(myPlayer);
+    }
+
+    void spawnRamp(GameObject myRamp, Vector3 targetPos)
+    {
+        //same deal but for the ram
+        GameObject newEnemy = Instantiate(myRamp, targetPos, Quaternion.identity);
+        rampEnemy newScript = newEnemy.GetComponent<rampEnemy>();
+        newScript.SetPlayer(myPlayer);
 
     }
 
