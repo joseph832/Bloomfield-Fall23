@@ -43,7 +43,7 @@ public class gameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //spawnTimer counts up for enemy spawn while timer counts down for game time
+        //waveTimer counts up for enemy spawn while timer counts down for game time
         spawnTimer += Time.deltaTime;
         timer -= Time.deltaTime;
 
