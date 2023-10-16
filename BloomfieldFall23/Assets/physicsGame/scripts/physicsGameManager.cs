@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 public class physicsGameManager : MonoBehaviour
 {
@@ -28,7 +29,19 @@ public class physicsGameManager : MonoBehaviour
     public GameObject[] wave1 = null;
     public GameObject[] wave2 = null;
     public GameObject[] wave3 = null;
-    
+
+    [Header("scenes")]
+    public string introScene;
+    public string gameScene;
+    public string finaleScene;
+
+
+    void Awake()
+    {
+        //make sure our gameManager is persistent & doesn't die on scene change
+        DontDestroyOnLoad(this.gameObject);
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +55,12 @@ public class physicsGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyUp(KeyCode.Return))
+        {
+            sceneChanger(gameScene);
+            StartCoroutine(setPlayer(1f));
+        }
+
         //waveTimer counts up for enemy spawn while timer counts down for game time
         waveTimer += Time.deltaTime;
        // timer -= Time.deltaTime;
@@ -113,5 +132,29 @@ public class physicsGameManager : MonoBehaviour
             else if (newEnemy.tag == "cube") { SpawnCube(newEnemy, targetPos); }
             else { Debug.Log("INVALID enemy type"); }
         }
+    }
+
+    //method to call whenever the scene needs to be changed
+    void sceneChanger(string sceneName)
+    {
+        //built in Unity function to load a new scene
+        SceneManager.LoadScene(sceneName);
+    }
+
+    void findPlayer()
+    {
+        //uses a string to find a specific object, be sure to correctly name your player
+        myPlayer = GameObject.Find("physicsPlayer");
+    }
+
+    //this is a coroutine - a snippet of code that runs on its own time frame / loop when called
+    //in this case we're using it to make sure our game scene loads before searching for the player
+    //otherwise we'd risk searching before the player is loaded into the active game scene & failing to find
+    IEnumerator setPlayer(float myTime)
+    {
+        //wait for a given amount of time
+        yield return new WaitForSeconds(myTime);
+        //call our findPlayer function
+        findPlayer();
     }
 }
