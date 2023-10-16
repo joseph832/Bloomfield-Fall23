@@ -58,27 +58,17 @@ public class physicsGameManager : MonoBehaviour
         if(waveTimer > waveInterval)
         {
             waveCount++; //add to the wave tracker, so we don't double spawn 1 wave
-            int waveLength = 0;
             
             if(waveCount == 1) 
-            {
-                waveLength = wave1.Length; //get length of the wave we need
-                SpawnWave(wave1, waveLength);
-            }
+                { SpawnWave(wave1); }
 
             else if(waveCount == 2) 
-            { 
-                waveLength = wave2.Length;
-                SpawnWave(wave2, waveLength);
-            }
+                { SpawnWave(wave2); }
 
             else if(waveCount == 3) 
-            { 
-                waveLength = wave3.Length;
-                SpawnWave(wave3, waveLength);
-            }
+            { SpawnWave(wave3); }
 
-            else { waveLength = 0; }
+            else { /*filler - add random spawns past wave 3 here*/ }
 
             waveTimer = 0f; //reset spawn timer on spawn
             waveInterval = waveInterval *= 1.2f;
@@ -105,9 +95,10 @@ public class physicsGameManager : MonoBehaviour
 
     }
 
-    void SpawnWave(GameObject[] myWave, int waveCount)
+    void SpawnWave(GameObject[] myWave)
     {
-        for (int i = 0; i < waveCount; i++) //spawn an enemy of each type for each index in the array
+        int waveLength = myWave.Length;
+        for (int i = 0; i < waveLength; i++) //spawn an enemy of each type for each index in the array
         {
             //this line sets the enemy spawn to a random position inside the game bounds
             Vector3 targetPos = new Vector3(UnityEngine.Random.Range(myXbounds.x, myXbounds.y), 
