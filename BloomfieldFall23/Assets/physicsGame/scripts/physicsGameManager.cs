@@ -35,12 +35,15 @@ public class physicsGameManager : MonoBehaviour
     public string gameScene;
     public string finaleScene;
 
+    public enum GameState { GAMESTART,PLAYING,GAMEOVER };
+    public GameState myGameState;
+
 
     void Awake()
     {
         //make sure our gameManager is persistent & doesn't die on scene change
+        myGameState = GameState.GAMESTART;
         DontDestroyOnLoad(this.gameObject);
-
     }
 
     // Start is called before the first frame update
@@ -55,11 +58,49 @@ public class physicsGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyUp(KeyCode.Return))
+        switch (myGameState)
         {
-            sceneChanger(gameScene);
-            StartCoroutine(setPlayer(1f));
+                case GameState.GAMESTART: //code for the start menu goes here
+                if (Input.GetKeyUp(KeyCode.Return))
+                {
+                    sceneChanger(gameScene); //sceneChanger takes a string as an argument and loads a new scene
+                    StartCoroutine(setPlayer(1f)); //we delay the search for our player to avoid running find() before the player loads
+                    EnterPlaying();
+                }
+                break;
+
+                case GameState.PLAYING: //code for the game playing scene
+
+                //every 30 seconds, spawn a wave of enemies
+                if (waveTimer > waveInterval && myPlayer != null)
+                {
+                    waveCount++; //add to the wave tracker, so we don't double spawn 1 wave
+
+                    if (waveCount == 1)
+                    { SpawnWave(wave1); }
+
+                    else if (waveCount == 2)
+                    { SpawnWave(wave2); }
+
+                    else if (waveCount == 3)
+                    { SpawnWave(wave3); }
+
+                    else { /*filler - add random spawns past wave 3 here*/ }
+
+                    waveTimer = 0f; //reset spawn timer on spawn
+                    waveInterval = waveInterval *= 1.2f; //make each wave spawn a little slower
+                } //code for spawning pre-designed waves of enemies
+
+                break;
+
+                case GameState.GAMEOVER: //code for our game over screen/scene
+
+                break;
         }
+
+
+
+
 
         //waveTimer counts up for enemy spawn while timer counts down for game time
         waveTimer += Time.deltaTime;
@@ -71,42 +112,37 @@ public class physicsGameManager : MonoBehaviour
        // Debug.Log("timer: " + timer + "timeDisplay: " + timeDisplay);
        // myTimerText.text = timeDisplay.ToString();
 
-  
-        
-        //every 30 seconds, spawn a wave of enemies
-        if(waveTimer > waveInterval)
-        {
-            waveCount++; //add to the wave tracker, so we don't double spawn 1 wave
-            
-            if(waveCount == 1) 
-                { SpawnWave(wave1); }
-
-            else if(waveCount == 2) 
-                { SpawnWave(wave2); }
-
-            else if(waveCount == 3) 
-            { SpawnWave(wave3); }
-
-            else { /*filler - add random spawns past wave 3 here*/ }
-
-            waveTimer = 0f; //reset spawn timer on spawn
-            waveInterval = waveInterval *= 1.2f;
-        }
-
 
     }
 
-    void SpawnCube(GameObject myCube, Vector3 targetPos)
+    void ChangeMode(GameState state) //call this to change the GameState enum, takes a state as an argument
     {
-        //instantiate a new enemy - be sure to declare it so we can assign it a player
-        //be sure to declare the GameObject so we can find its components and edit the target player
-        GameObject newEnemy = Instantiate(myCube, targetPos, Quaternion.identity);
+        myGameState = state;
+    }
+
+    void EnterPlaying()
+    {
+        ChangeMode(GameState.PLAYING);
+    }
+
+    void EnterFinale()
+    {
+
+    }
+
+    void EnterStartMenu()
+    {
+
+    }
+
+    void SetCube(GameObject newEnemy, Vector3 targetPos)
+    {
         //set the script and reference the player variable in our gameManager
         cubeEnemy newScript = newEnemy.GetComponent<cubeEnemy>();
         newScript.SetPlayer(myPlayer);
     }
 
-    void SpawnRamp(GameObject newEnemy,  Vector3 targetPos)
+    void SetRamp(GameObject newEnemy,  Vector3 targetPos)
     {
         //this time we just call the different enemy script
         rampEnemy newScript = newEnemy.GetComponent<rampEnemy>();
@@ -128,8 +164,8 @@ public class physicsGameManager : MonoBehaviour
             GameObject newEnemy = Instantiate(myWave[i], targetPos, Quaternion.identity);
 
             //check tags, set up enemy if valid, otherwise return debug log INVALID
-            if (newEnemy.tag == "ramp") { SpawnRamp(newEnemy, targetPos); }
-            else if (newEnemy.tag == "cube") { SpawnCube(newEnemy, targetPos); }
+            if (newEnemy.tag == "ramp") { SetRamp(newEnemy, targetPos); }
+            else if (newEnemy.tag == "cube") { SetCube(newEnemy, targetPos); }
             else { Debug.Log("INVALID enemy type"); }
         }
     }

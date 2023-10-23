@@ -149,3 +149,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 45
   targetPlayer: {fileID: 0}
+  trackThreshold: 5
+  stopTracking: 0
