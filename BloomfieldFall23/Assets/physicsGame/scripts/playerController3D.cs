@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+//using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class playerController3D : MonoBehaviour
 {
@@ -11,9 +12,9 @@ public class playerController3D : MonoBehaviour
     public float jumpForce = 5f;
 
     [Header("look vars")]
-    public Vector2 sensMouse = new Vector2 (.5f,.5f);
+    public Vector2 sensMouse = new Vector2(.5f, .5f);
     public GameObject myCam;
-    public Vector2 camVertLock = new Vector2(90,-90);
+    public Vector2 camVertLock = new Vector2(90, -90);
 
     [Header("debugs")]
     public bool grounded;
@@ -21,6 +22,32 @@ public class playerController3D : MonoBehaviour
     Vector3 myDir;
     float rotY;
     float rotX;
+
+    [Header("cosmetics")]
+    public Slider R;
+    public Slider G;
+    public Slider B;
+    MeshRenderer myMeshRender;
+    Material myMat;
+    
+    public MeshFilter myHatMesh;
+    public Mesh[] playerMeshes;
+    int hatPos = 0;
+
+
+    public void OnEnable()
+    {
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked; //this hides the mouse
+        myCam.SetActive(true);
+
+    }
+
+    public void OnDisable()
+    {
+        UnityEngine.Cursor.lockState = CursorLockMode.Confined; //this hides the mouse
+        myCam.SetActive(false);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,14 +56,20 @@ public class playerController3D : MonoBehaviour
         rotY = 0f;
         rotX = 0f;
 
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+
+        //find components in start so we don't have to run a search each update cycle
+        //the player should have all these so we don't need to make them public 
         myRB = GetComponent<Rigidbody>();
+        myMeshRender = GetComponent<MeshRenderer>();
+        myMat = myMeshRender.material;
+        DontDestroyOnLoad(this.gameObject);
 
     }
 
     // Update is called once per frame
     void Update()
     {
+
         //debugs for player: look angles
         //first we take a vector from the camera transform then use TransformDirection to convert it from
         //local to world space. Then we draw a ray using that vector to display player look (forward) and left/right 
@@ -130,6 +163,27 @@ public class playerController3D : MonoBehaviour
         //construct our direction then return it
         myDir = new Vector3(x, 0f, z);
         return myDir;
+    }
+
+    public void ChangeRGB()
+    {
+        Color myCol = new Color(R.value, G.value, B.value, 1f);
+        myMat.color = myCol;
+    }
+
+    public void ChangeMesh()
+    {
+        if (hatPos < playerMeshes.Length-1)
+        {
+            hatPos++;
+            myHatMesh.mesh = playerMeshes[hatPos];
+        }
+        else
+        {
+            hatPos = 0;
+            myHatMesh.mesh = playerMeshes[hatPos];
+        }
+
     }
 
 }

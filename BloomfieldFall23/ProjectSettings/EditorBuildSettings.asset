@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/physicsIntro.unity
     guid: b67ff65ba89d0af40b8cd88ae6f541b8
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/physicsGame.unity
     guid: ced2a2961c8634045b4b1431c9a368ed
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/topDownCar.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}

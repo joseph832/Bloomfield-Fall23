@@ -61,12 +61,9 @@ public class physicsGameManager : MonoBehaviour
         switch (myGameState)
         {
                 case GameState.GAMESTART: //code for the start menu goes here
-                if (Input.GetKeyUp(KeyCode.Return))
-                {
-                    sceneChanger(gameScene); //sceneChanger takes a string as an argument and loads a new scene
-                    StartCoroutine(setPlayer(1f)); //we delay the search for our player to avoid running find() before the player loads
-                    EnterPlaying();
-                }
+
+                UnityEngine.Cursor.lockState = CursorLockMode.Confined;
+
                 break;
 
                 case GameState.PLAYING: //code for the game playing scene
@@ -95,6 +92,8 @@ public class physicsGameManager : MonoBehaviour
 
                 case GameState.GAMEOVER: //code for our game over screen/scene
 
+                UnityEngine.Cursor.lockState = CursorLockMode.Confined;
+
                 break;
         }
 
@@ -115,24 +114,25 @@ public class physicsGameManager : MonoBehaviour
 
     }
 
-    void ChangeMode(GameState state) //call this to change the GameState enum, takes a state as an argument
+    public void ChangeMode(GameState state) //call this to change the GameState enum, takes a state as an argument
     {
         myGameState = state;
     }
 
-    void EnterPlaying()
+    public void EnterPlaying()
     {
+        StartCoroutine(setPlayer(.5f));
         ChangeMode(GameState.PLAYING);
     }
 
-    void EnterFinale()
+    public void EnterFinale()
     {
-
+        ChangeMode(GameState.GAMEOVER);
     }
 
-    void EnterStartMenu()
+    public void EnterStartMenu()
     {
-
+        ChangeMode(GameState.GAMESTART);
     }
 
     void SetCube(GameObject newEnemy, Vector3 targetPos)
@@ -171,7 +171,7 @@ public class physicsGameManager : MonoBehaviour
     }
 
     //method to call whenever the scene needs to be changed
-    void sceneChanger(string sceneName)
+    public void sceneChanger(string sceneName)
     {
         //built in Unity function to load a new scene
         SceneManager.LoadScene(sceneName);
