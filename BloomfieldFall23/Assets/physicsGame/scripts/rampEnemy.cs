@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class rampEnemy : MonoBehaviour
     public float speed;
     public GameObject targetPlayer;
     Rigidbody myRB;
+    public float slideFriction = 1f;
 
     //ramps will target the player then stop once close enough and just launch faster
     //we'll use a distance to player threshold and an accelerator to get this behavior
@@ -44,6 +46,13 @@ public class rampEnemy : MonoBehaviour
         if (!stopTracking) { myRB.AddForce(dirTowards.normalized * speed); }
         //once tracking is turned off (ramp is close to player) add a higher force in existing dir
         else { myRB.AddForce(myRB.velocity.normalized * speed * accel); }
+
+
+        if(myRB.velocity.magnitude > 0f) 
+        {
+            Vector3 stopVel = Vector3.ClampMagnitude(-myRB.velocity.normalized * slideFriction, myRB.velocity.magnitude);
+            myRB.AddForce(stopVel); 
+        }
     }
 
     public void SetPlayer(GameObject player) //this is here for the gameManager to call on enemy spawn

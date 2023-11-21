@@ -23,6 +23,8 @@ public class gameManager : MonoBehaviour
     public Vector2 myXbounds;
     public Vector2 myYbounds;
 
+    public AudioSource bugSquish;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,6 +71,11 @@ public class gameManager : MonoBehaviour
         {
             playerScores[i].text = myCarControllers[i].GetScore().ToString();
         }
+    }
+
+    public void PlaySquish()
+    {
+        bugSquish.Play();
     }
 
 }

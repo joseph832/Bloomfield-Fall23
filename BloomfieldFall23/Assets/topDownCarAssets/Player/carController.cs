@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class carController : MonoBehaviour
 {
+    public gameManager myMgr; //link the gameManager so we can call func, use get/set 
     //make our keybinds public so we can have player1 / player2 / etc
     [Header("Input Keys")]
     public KeyCode upKey = KeyCode.W;
@@ -17,12 +19,18 @@ public class carController : MonoBehaviour
     public GameObject myCar;
     public Transform myTransform;
 
+    [Header("Audio Vars")]
+    public AudioClip[] myCrashes; //in editor assign as many audio clips as you want
+    AudioSource crashSource; //the audio source attached to the player prefab
+
     private int myScore;
 
     // Start is called before the first frame update
     void Start()
     {
         myScore = 0;
+        crashSource = GetComponent<AudioSource>(); //find the audio source component
+        if(this.gameObject.name != "Player") { crashSource.enabled = false; } //check to make sure player2 does not play audio
     }
 
     // Update is called once per frame
@@ -63,9 +71,14 @@ public class carController : MonoBehaviour
         Debug.Log("collided with: " + collision.gameObject.name);
         if(collision.gameObject.name == "enemy(Clone)")
         {
+            myMgr.PlaySquish(); //sound sources are all saved on the gameManager class
             Destroy(collision.gameObject);
             myScore += 1;
             //if the player (this object) hits an enemy, destroy it
+        }
+        else if(collision.gameObject.tag == "Player" && this.gameObject.name == "Player")
+        {
+            PlayCrash();
         }
     }
 
@@ -73,4 +86,12 @@ public class carController : MonoBehaviour
     {
         return myScore;
     }
+
+    public void PlayCrash()
+    {
+        int i = UnityEngine.Random.Range(0, myCrashes.Length - 1);
+        crashSource.clip = myCrashes[i];
+        crashSource.Play();
+    }
+
 }
