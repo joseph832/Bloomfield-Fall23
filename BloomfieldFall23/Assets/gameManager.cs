@@ -2,73 +2,72 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System;
 
 public class gameManager : MonoBehaviour
 {
-
-    public float timer = 60f;
+    [Header("Timer Vars")]
+    public float timer;
+    public TextMeshProUGUI currentTime;
+    public float enemyTimer;
     public float spawnInterval = 2f;
-    float spawnTimer;
+    public float timeLimit = 60f;
 
-    public TextMeshProUGUI myTimerText;
-    public TextMeshProUGUI[] playerScores;
+    [Header("Player Vars")]
+    public GameObject myPlayer;
+    public float myScore;
+    public TextMeshProUGUI scoreText;
+    carController myController;
 
-    public GameObject[] myPlayers;
-    carController[] myCarControllers;
-
+    [Header("Collectibles")]
     public GameObject myEnemy;
 
-    //we can use Vector2s to represent the X and Y boundaries of our game scene
+    //declare bounding box for my scene
     public Vector2 myXbounds;
     public Vector2 myYbounds;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-
-        timer = 60f;
-        spawnTimer = 0f;
-
-        myCarControllers = new carController[myPlayers.Length];
-
-        for (int i = 0; i < myPlayers.Length; i++)
-        {
-            myCarControllers[i] = myPlayers[i].GetComponent<carController>();
-        }
-
-        Debug.Log("myCarController.Length: " + myCarControllers.Length);
+        timer = 0f;
+        myController = myPlayer.GetComponent<carController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //spawnTimer counts up for enemy spawn while timer counts down for game time
-        spawnTimer += Time.deltaTime;
-        timer -= Time.deltaTime;
+        myScore = myController.GetScore();
+        scoreText.text = myScore.ToString();
 
-        //Mathf. includes a lot of useful math functions we can use
-        //here we're using RoundToInt() to make a cleaner in-game clock display (no decimals)
-        float timeDisplay = Mathf.RoundToInt(timer);
-        Debug.Log("timer: " + timer + "timeDisplay: " + timeDisplay);
-        myTimerText.text = timeDisplay.ToString();
+        //deltaTime is the amount of time that has passed from one Update() to the next
+        timer += Time.deltaTime;
 
-        //this line sets the enemy spawn to a random position inside the game bounds
-        Vector3 targetPos = new Vector3(UnityEngine.Random.Range(myXbounds.x, myXbounds.y), UnityEngine.Random.Range(myYbounds.x, myYbounds.y), 0);
-        
-        //every 2 seconds, spawn an enemy
-        if(spawnTimer > spawnInterval)
+        //Mathf is a class in unity that has a variety of math functions built in
+        float timeLeft = Mathf.Round(60f - timer);
+        //set the UI timer text to time left
+        currentTime.text = timeLeft.ToString();
+
+        //our enemyTimer will be used to spawn red circle prefabs
+        enemyTimer += Time.deltaTime;
+
+        //this turns off the player when the time limit is reached
+        if(timer > timeLimit)
         {
-            //instantiate creates a new game object at the given pos/rot 
-            //this can be a prefab from inside your assets folder
-            Instantiate(myEnemy, targetPos, Quaternion.identity);
-            spawnTimer = 0f; //reset spawn timer on spawn
+            myPlayer.SetActive(false);
         }
 
-        for (int i = 0; i < myCarControllers.Length; i++)
+        //this spawns an enemy on a given interval, then resets the timer
+        Vector3 targetPos = new Vector3(Random.Range(myXbounds.x,myXbounds.y), Random.Range(myYbounds.x, myYbounds.y),0);
+        if(enemyTimer > spawnInterval)
         {
-            playerScores[i].text = myCarControllers[i].GetScore().ToString();
+            enemyTimer = 0f;
+            Instantiate(myEnemy, targetPos, Quaternion.identity);
         }
     }
 
+    public float GetTime()
+    {
+        return timer;
+    }
 }
