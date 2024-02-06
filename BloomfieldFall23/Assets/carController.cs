@@ -5,11 +5,21 @@ using UnityEngine;
 
 public class carController : MonoBehaviour
 {
+    //speed is for forward/backwards, rotSpeed is for turning left/right
+
+    [Header("movement vars")]
     public float speed = 2f;
-    public GameObject myCar;
-    public Input input;
+    public float rotSpeed = 1f;
     public Vector3 myVec;
-    public int myScore;
+
+    [Header("KeyCodes")]
+    public KeyCode forward = KeyCode.W;
+    public KeyCode backwards = KeyCode.S;
+    public KeyCode left = KeyCode.A;
+    public KeyCode right = KeyCode.D;
+
+
+    int myScore;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,22 +29,25 @@ public class carController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(forward))
         {
-            myCar.transform.position += Vector3.up * speed;
-            Debug.Log("W pressed");
+            //manually adds a vector to the actual position part of the transform - the vector added this way is in world space
+            //myCar.transform.position += Vector3.up * speed;
+            //Debug.Log("W pressed");
+
+            transform.Translate(Vector3.left * speed);
         }
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(backwards))
         {
-            myCar.transform.position += Vector3.down * speed;
+            transform.Translate(Vector3.right * speed);
         }
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(left))
         {
-            myCar.transform.position += Vector3.left * speed;
+            transform.Rotate(new Vector3(0,0,-1*rotSpeed));
         }
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(right))
         {
-            myCar.transform.position += Vector3.right * speed;
+            transform.Rotate(new Vector3(0, 0,1*rotSpeed));
         }
 
     }
