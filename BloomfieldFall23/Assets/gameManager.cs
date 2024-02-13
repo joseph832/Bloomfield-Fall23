@@ -111,17 +111,20 @@ public class gameManager : MonoBehaviour
     //player chooses to start the game
     public void StartGame()
     {
+
         //gameObjects use the .SetActive(bool) method to turn on/off
         for (int i = 0; i < myPlayers.Length; i++)
         {
             myPlayers[i].SetActive(true);
             //components use the .enabled property to turn on/off
             myControllers[i].enabled = true;
+            myControllers[i].SetScore(0);
             scoreText[i].enabled = true;
         }
 
 
         startText.enabled = false;
+
         gameStarted = true;
 
         //also disable final score text in case player is restarting a new play after the first
@@ -132,6 +135,25 @@ public class gameManager : MonoBehaviour
     public void EndGame()
     {
         Debug.Log("ended game");
+
+        GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>() as GameObject[];
+        foreach (GameObject thisObj in allObjects)
+        {
+            if(thisObj.tag == "Collectibles")
+            {
+                Destroy(thisObj);
+            }
+        }
+
+        //find all gameObjects in the scene
+        /*GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>() as GameObject[];
+        foreach (GameObject thisObj in allObjects)
+        {
+            if (thisObj.tag == "Collectibles")
+            {
+                Destroy(thisObj);
+            }
+        }*/
 
         for (int i = 0; i < myPlayers.Length; i++)
         {
@@ -170,6 +192,8 @@ public class gameManager : MonoBehaviour
 
         winner.text = "Player " + (winningIndex+1).ToString();
         finalScore.text = myScore[winningIndex].ToString();  
+
+
 
         startText.enabled = false;
         gameOver.SetActive(true);

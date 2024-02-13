@@ -18,8 +18,9 @@ public class carController : MonoBehaviour
     public KeyCode left = KeyCode.A;
     public KeyCode right = KeyCode.D;
 
-
-    int myScore;
+    //int myScore is private - there's no public prefix
+    //we do this so other scripts can't edit the player score accidentally
+    private int myScore;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,9 +65,16 @@ public class carController : MonoBehaviour
         }
     }
 
+    //GET function to send the score out to another script if needed
     public int GetScore()
     {
         return myScore;
+    }
+
+    //SET function to change the score when it is time to
+    public void SetScore(int score)
+    {
+        myScore = score;
     }
 
 }
